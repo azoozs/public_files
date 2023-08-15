@@ -4,16 +4,18 @@
         <title> gramjs </title>
     </header>
     <body>
+        <video src="" controls></video>
         <script src="./telegram.js"></script>
         <script>
 
             const { Api, TelegramClient } = telegram;
             const { StringSession } = telegram.sessions;
             const { FloodWaitError } = telegram.errors;
-            const API_ID = 'AP_ID';
-            const API_HASH = "API_HASH";
+            const API_ID = 'API_ID'; // Replace with your user account's API_ID
+            const API_HASH = "API_HASH"; // Replace with your user account's API_HASH
             const BOT_TOKEN = "BOT_TOKEN";
-            
+            const CODEC = 'video/mp4; codecs="avc1.64000d,mp4a.40.2"';
+
             async function main() {
                 const client = new TelegramClient(new StringSession(''), API_ID, API_HASH);
                 await client.start({ botAuthToken: BOT_TOKEN });
@@ -28,19 +30,32 @@
                         accessHash: doc.accessHash,
                         thumbSize: "",
                     });
-                    
-                    for await (const chunk of client.iterDownload({ file: fileLocation, requestSize:1024*1024 }))
-                    {
-                        console.log("Downloaded chunk of size",chunk.length);
-                    };
+
+                    // Create a MediaSource object
+                    const mediaSource = new MediaSource();
+                    const video = document.querySelector('video');
+                    video.src = URL.createObjectURL(mediaSource);
+
+                    mediaSource.addEventListener('sourceopen', async () => {
+                        // Create a SourceBuffer object
+                        const sourceBuffer = mediaSource.addSourceBuffer(CODEC);
+                        let index = 0;
+                        // Append the chunks to the SourceBuffer
+                        for await (const chunk of client.iterDownload({ file: fileLocation, requestSize:1024*1024 })) {
+                            console.log("Downloaded chunk of size",chunk.length);
+                            console.log("################################################################ chunk type #################################################################");
+                            console.log(typeof(chunk));
+                            sourceBuffer.appendBuffer(chunk);
+                            console.log("current chunks: " + index);
+                            index += 1;
+                        };
                         
-                    
+                        // End the stream
+                        mediaSource.endOfStream();
+                    });
                 });
             }
             main();
         </script>
-        
-        
     </body>
-
 </html>

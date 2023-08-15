@@ -5,13 +5,11 @@
     </header>
     <body>
         <script src="./telegram.js"></script>
-        
         <script>
 
             const { Api, TelegramClient } = telegram;
             const { StringSession } = telegram.sessions;
             const { FloodWaitError } = telegram.errors;
-
             const API_ID = 'AP_ID';
             const API_HASH = "API_HASH";
             const BOT_TOKEN = "BOT_TOKEN";
@@ -31,24 +29,15 @@
                         thumbSize: doc.thumbs[0].type,
                     });
                     
-                    let start = 0;
-                    const end = 1024 * 1024;
-                    
-                    while(true)
+                    for await (const chunk of client.iterDownload({ file: fileLocation, requestSize:1024*1024 }))
                     {
-                        for await (const chunk of client.iterDownload({ file: fileLocation, offset: start, limit: end, requestSize:1024*1024 }))
-                        {
-                            console.log("Downloaded chunk of size",chunk.length);
-                        };
-                        start += end;
-                    }
+                        console.log("Downloaded chunk of size",chunk.length);
+                    };
+                        
+                    
                 });
             }
-
             main();
-
-            
-
         </script>
         
         

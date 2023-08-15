@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title> gramjs </title>
+    </header>
+    <body>
+        <script src="./telegram.js"></script>
+        
+        <script>
+
+            const { Api, TelegramClient } = telegram;
+            const { StringSession } = telegram.sessions;
+            const { FloodWaitError } = telegram.errors;
+
+            const API_ID = 'AP_ID'; // Replace with your user account's API_ID
+            const API_HASH = "API_HASH"; // Replace with your user account's API_HASH
+            const BOT_TOKEN = "BOT_TOKEN";
+            const CHAT_ID = 'CHAT_ID';
+            const CODEC = 'video/mp4; codecs="avc1.64000d,mp4a.40.2"';
+            
+            
+            
+        
+            async function streamVideo(client, fileLocation, videoElement) {
+                // Set the chunk size and offset
+                const chunkSize = 1024 * 1024;
+                let offset = 0;
+
+                // Create a MediaSource object and set it as the src of the video element
+                const mediaSource = new MediaSource();
+                videoElement.src = URL.createObjectURL(mediaSource);
+
+                // Add an event listener for the sourceopen event
+                mediaSource.addEventListener('sourceopen', async () => {
+                    // Create a SourceBuffer object for the video/mp4 MIME type
+                    const sourceBuffer = mediaSource.addSourceBuffer(CODEC);
+
+                    // Download chunks of data from the media file and append them to the SourceBuffer
+                    while (true) {
+                        // Download a chunk of data from the media file
+                        const result = await client.invoke(
+                            new Api.upload.GetFile({
+                                location: fileLocation,
+                                offset: offset,
+                                limit: chunkSize,
+                                precise: false,
+                                cdnSupported: false,
+                            })
+                        );
+
+                        // Check if there is any data left to download
+                        if (!result.bytes || result.bytes.length === 0) {
+                            console.log("no bytes");
+                            break;
+                        }
+
+                        // Check if the readyState property of the MediaSource object is 'open'
+                        if (mediaSource.readyState === 'open') {
+                            // Append the downloaded data to the SourceBuffer
+                            console.log("bytes downloaded");
+                            console.log(result.bytes);
+                            sourceBuffer.appendBuffer(result.bytes);
+                        } else {
+                            console.log("MediaSource readyState is not 'open'");
+                            break;
+                        }
+
+                        // Increment the offset by the chunk size
+                        offset += chunkSize;
+                    }
+
+                    // End the stream when all data has been downloaded
+                    if (mediaSource.readyState === 'open') {
+                        mediaSource.endOfStream();
+                    }
+                });
+            }
+
+            async function main() {
+                const client = new TelegramClient(new StringSession(''), API_ID, API_HASH);
+                await client.start({ botAuthToken: BOT_TOKEN });
+
+                client.addEventHandler(async (update) => {
+                    console.log('Received new Update');
+                    console.log(update.message.media.document);
+                    const doc = update.message.media.document;
+                    const fileLocation = new Api.InputDocumentFileLocation({
+                        id: doc.id,
+                        fileReference: doc.fileReference,
+                        accessHash: doc.accessHash,
+                        thumbSize: doc.thumbs[0].type,
+                    });
+
+                    const videoElement = document.createElement('video');
+                    videoElement.controls = true;
+                    document.body.appendChild(videoElement);
+
+                    streamVideo(client, fileLocation, videoElement);
+                });
+            }
+
+            main();
+
+            
+
+        </script>
+        
+        
+    </body>
+
+</html>

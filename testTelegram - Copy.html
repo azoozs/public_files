@@ -26,7 +26,7 @@
                         id: doc.id,
                         fileReference: doc.fileReference,
                         accessHash: doc.accessHash,
-                        thumbSize: doc.thumbs[0].type,
+                        
                     });
                     
                     for await (const chunk of client.iterDownload({ file: fileLocation, requestSize:1024*1024 }))

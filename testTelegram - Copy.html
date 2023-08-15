@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title> gramjs </title>
+    </header>
+    <body>
+        <script src="./telegram.js"></script>
+        
+        <script>
+
+            const { Api, TelegramClient } = telegram;
+            const { StringSession } = telegram.sessions;
+            const { FloodWaitError } = telegram.errors;
+
+            const API_ID = 'AP_ID';
+            const API_HASH = "API_HASH";
+            const BOT_TOKEN = "BOT_TOKEN";
+            
+            async function main() {
+                const client = new TelegramClient(new StringSession(''), API_ID, API_HASH);
+                await client.start({ botAuthToken: BOT_TOKEN });
+
+                client.addEventHandler(async (update) => {
+                    console.log('Received new Update');
+                    console.log(update.message.media.document);
+                    const doc = update.message.media.document;
+                    const fileLocation = new Api.InputDocumentFileLocation({
+                        id: doc.id,
+                        fileReference: doc.fileReference,
+                        accessHash: doc.accessHash,
+                        thumbSize: doc.thumbs[0].type,
+                    });
+                    
+                    let start = 0;
+                    const end = 1024 * 1024;
+                    
+                    while(true)
+                    {
+                        for await (const chunk of client.iterDownload({ file: fileLocation, offset: start, limit: end, requestSize:1024*1024 }))
+                        {
+                            console.log("Downloaded chunk of size",chunk.length);
+                        };
+                        start += end;
+                    }
+                });
+            }
+
+            main();
+
+            
+
+        </script>
+        
+        
+    </body>
+
+</html>

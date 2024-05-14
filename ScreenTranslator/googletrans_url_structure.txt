@@ -1,0 +1,45 @@
+ريما أحتاج للنظر في مكتبة googletrans
+لفهم كيفية إنشاء token
+كل ساعة
+ولكن الأمر ليس ضروري الآن لأنه يعمل  بدون ال token
+
+https://translate.googleapis.com/translate_a/single
+
+func translate_text(text, src, dest):
+	var urll = base_url + "?client=gtx" + "&sl=" + src + "&tl=" + dest + "&dt=t" + "&q=" + text 
+
+
+or I can build params from Dictionary like this:
+
+params = {
+        'client': client,
+        'sl': src,
+        'tl': dest,
+        'hl': dest,
+        'dt': ['at', 'bd', 'ex', 'ld', 'md', 'qca', 'rw', 'rm', 'ss', 't'], # Often I need to one param here is 't' 
+        'ie': 'UTF-8',
+        'oe': 'UTF-8',
+        'otf': 1,
+        'ssel': 0,
+        'tsel': 0,
+        'tk': token,
+        'q': query,
+    }
+
+func build_params(url:String,params:Dictionary):
+	var full_url = "?"
+	for key in params:
+		var value = params[key]
+		if typeof(value) == TYPE_ARRAY:
+			for tag in value:
+				full_url += key  +"="+ tag + "&"
+			continue
+		full_url += str(key) + "=" + str(value) + "&"
+	full_url = full_url.left(-1)
+	
+	var a:Array = [1,5]
+	a.append("fffffff")
+	print(len(a[2]))
+	
+	return url + full_url
+

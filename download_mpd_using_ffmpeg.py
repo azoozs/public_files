@@ -2,7 +2,7 @@
 import os
 
 # Path to the folder containing .mpd files
-folder_path = r"C:\Users\User\Desktop\phys104_last\Mid_1\Mid_1_Exam\Boys\04_1444_1st"
+folder_path = r"C:\Users\{User}\Desktop\phys104_last\Mid_1\Mid_1_Exam\Boys\04_1444_1st"
 
 # List all .mpd files in the folder
 mpd_files = [f for f in os.listdir(folder_path) if f.endswith(".mpd")]

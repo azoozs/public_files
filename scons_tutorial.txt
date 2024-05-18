@@ -1,0 +1,14 @@
+scons platform=windows tools=no target=release bits=64 -j 8
+
+
+scons platform=android target=release android_arch=armv7
+scons platform=windows tools=no target=release bits=64 -j 8
+scons platform=android target=release android_arch=arm64v8
+cd platform/android/java
+.\gradlew generateGodotTemplates
+
+
+
+
+D:/Programs/Godot/versions/3.4.4/stable/newkey/debug.keystore
+D:/Programs/jdk/install_8/bin/jarsigner.exe

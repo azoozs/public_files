@@ -1,0 +1,41 @@
+scons platform=android target=release android_arch=arm64v8 && scons platform=android target=release android_arch=x86 && scons platform=android target=release android_arch=x86_64 && scons platform=android target=release_debug android_arch=armv7 && scons platform=android target=release_debug android_arch=arm64v8
+
+
+###start android
+scons platform=android target=release android_arch=x86 && scons platform=android target=release android_arch=x86_64 
+scons platform=android target=release_debug android_arch=x86 && scons platform=android target=release_debug android_arch=x86_64 
+
+scons platform=android target=release android_arch=armv7 && scons platform=android target=release android_arch=arm64v8 
+scons platform=android target=release_debug android_arch=armv7 && scons platform=android target=release_debug android_arch=arm64v8 
+###Full normally
+scons platform=android target=release android_arch=x86 && scons platform=android target=release android_arch=x86_64 && scons platform=android target=release_debug android_arch=x86 && scons platform=android target=release_debug android_arch=x86_64 && scons platform=android target=release android_arch=armv7 && scons platform=android target=release android_arch=arm64v8 && scons platform=android target=release_debug android_arch=armv7 && scons platform=android target=release_debug android_arch=arm64v8 
+### generate_binding=yes
+
+scons -j14 platform=android target=release generate_binding=yes android_arch=x86 && scons -j14 platform=android target=release generate_binding=yes android_arch=x86_64 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=x86 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=x86_64 && scons -j14 platform=android target=release generate_binding=yes android_arch=armv7 && scons -j14 platform=android target=release generate_binding=yes android_arch=arm64v8 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=armv7 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=arm64v8 
+###end android
+
+### start windows
+scons platform=windows target=release_debug generate_binding=yes bits=64
+scons platform=windows target=release generate_binding=yes bits=64
+
+scons platform=windows target=release_debug generate_binding=yes bits=32
+scons platform=windows target=release generate_binding=yes bits=32
+### Full
+
+scons platform=windows target=release_debug generate_binding=yes bits=64 && scons platform=windows target=release generate_binding=yes bits=64 && scons platform=windows target=release_debug generate_binding=yes bits=32 && scons platform=windows target=release generate_binding=yes bits=32
+
+### end windows
+
+
+
+
+
+### start full Windows and android
+scons -j14 platform=android target=release generate_binding=yes android_arch=x86 && scons -j14 platform=android target=release generate_binding=yes android_arch=x86_64 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=x86 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=x86_64 && scons -j14 platform=android target=release generate_binding=yes android_arch=armv7 && scons -j14 platform=android target=release generate_binding=yes android_arch=arm64v8 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=armv7 && scons -j14 platform=android target=release_debug generate_binding=yes android_arch=arm64v8 && scons -j14 platform=windows target=release_debug generate_binding=yes bits=64 && scons -j14 platform=windows target=release generate_binding=yes bits=64 && scons -j14 platform=windows target=release_debug generate_binding=yes bits=32 && scons -j14 platform=windows target=release generate_binding=yes bits=32
+
+### start full Windows and android
+
+
+#debug & release
+
+scons -j14 platform=android target=release generate_binding=yes android_arch=x86 && scons -j14 platform=android target=release generate_binding=yes android_arch=x86_64 && scons -j14 platform=android target=debug generate_binding=yes android_arch=x86 && scons -j14 platform=android target=debug generate_binding=yes android_arch=x86_64 && scons -j14 platform=android target=release generate_binding=yes android_arch=armv7 && scons -j14 platform=android target=release generate_binding=yes android_arch=arm64v8 && scons -j14 platform=android target=debug generate_binding=yes android_arch=armv7 && scons -j14 platform=android target=debug generate_binding=yes android_arch=arm64v8 && scons -j14 platform=windows target=debug generate_binding=yes bits=64 && scons -j14 platform=windows target=release generate_binding=yes bits=64 && scons -j14 platform=windows target=debug generate_binding=yes bits=32 && scons -j14 platform=windows target=release generate_binding=yes bits=32

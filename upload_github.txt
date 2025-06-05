@@ -1,0 +1,33 @@
+normal:
+git init
+git remote add origin https://github.com/Full-Projects/ChromeExtensionReverseEngineering_Captcha_Solver.git
+git add --all
+git commit -m "Initial upload of all files"
+git branch -m master main
+git push -u origin main --force
+
+
+
+#################################################################################################
+Large Files (Carefull I think there is a limitation on LFS file on each Orgnization maybe "2 GB" ):
+
+
+# Initialize Git and LFS
+git init
+git lfs install  # Enable LFS for this repo
+
+# Track large files (e.g., .exe, .dll, .bin, .zip, .pkg, etc.)
+git lfs track "*.exe"           # Example: Track executables
+git lfs track "*.dll"           # Example: Track DLLs
+git lfs track "*.bin"           # Example: Track binary files
+git lfs track "*.psd"           # Example: Track Photoshop files
+git lfs track "*.zip"           # Example: Track ZIP archives
+
+# Add and commit
+git add .gitattributes          # Track LFS rules
+git add --all
+git commit -m "Initial upload with LFS"
+
+# Rename branch (if needed) and push with LFS
+git branch -m master main
+git push -u origin main --force

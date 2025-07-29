@@ -22,15 +22,17 @@ creaet app
 
 12- go to [views.py] into [pages] and write :
 
+```py
 from django.shortcuts import render
 from django.http import HttpResponse
 
 
 def index(request):
     return HttpResponse('hello world ')
+```
 
 13- go to [urls.py] into [pages] and write :
-
+```py
 from django.urls import path
 from . import views
 
@@ -39,18 +41,22 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('about', views.about, name='about'),
 ]
+```
 
 14- test the website by: [python manage.py runserver]
 
 
 15 - go to [views.py] into [pages] and write: 
-
+```py
 def about(request):
     return HttpResponse('about')
+```
 
 16- go to [urls.py] into [pages] and into [urlpatterns] write:
 
+```py
 path('about', views.about, name='about'),
+```
 
 17- test the website by: [python manage.py runserver]
 
@@ -66,35 +72,42 @@ and write into [TEMPLATES] into [ 'DIR'=[os.path.join(BASE_DIR,'templates')] ]
 21- create [index.html] into [templates] Folder
 22- go to [views.py] into [pages] app and write in [def index()] :
 
+```py
 return render(request, 'pages/index.html')
 ### I write [pages/index.html] directly because [templates] is define in ['settings.py'] in project folder 
+```
 
 23- write HTML into index.html
 
-24- return render(request, 'pages/index.html, {'name':'ahmed'}')
+24- 
+```py
+return render(request, 'pages/index.html, {'name':'ahmed'}')
+```
 in [index.html] write [ {{name}} ] to get ahmed
 
 {{name}}  >> variable
 
 25- when I apply filters I write (we apply filters after [ | ] ) like this:
-
+```py
 {{name|capfirst}}
-
+```
 
 26- tags
-
+```
 {% tag %}
 {% endtag %}
-
+```
 27- create file ['base.html'] in [templates] folder
+```html
 {% extends 'base.html' %}
-
+```
 في أي صفحة تستخدم فيها الوراثة يجب أن تضع أكواد اتش تي ام إل داخل تاق بلوك:
-
+```html
 content or any name
 {% block content %}
 	<html>
 {% endblock content%}
+```
 يجب كتابتها بنفس الاسم في الصفحة الأب
 
 
